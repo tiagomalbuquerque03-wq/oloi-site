@@ -79,17 +79,27 @@
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.26);
     backdrop-filter: blur(6px);
-    color: #fff;
-    font-size: 13px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 11.5px;
     font-weight: 600;
-    padding: 6px 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    padding: 7px 14px;
     border-radius: 999px;
     width: fit-content;
     margin-bottom: 22px;
+  }
+  .badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
   }
   h1 {
     font-family: "Fraunces", Georgia, serif;
@@ -121,22 +131,37 @@
   .features {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
+    border-top: 1px solid var(--line);
   }
   .feature {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 14px 16px;
+    gap: 20px;
+    padding: 24px 2px;
+    border-bottom: 1px solid var(--line);
   }
-  .feature .icon { font-size: 19px; line-height: 1.3; flex-shrink: 0; }
-  .feature .txt { font-size: 14.5px; line-height: 1.48; color: var(--text); }
-  .feature .txt b { font-weight: 700; }
-  .feature .txt span { color: var(--text-dim); }
+  .feature .num {
+    flex-shrink: 0;
+    width: 30px;
+    padding-top: 2px;
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--gold);
+  }
+  .feature h3 {
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+  .feature p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-dim);
+  }
 
   form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
   input[type="email"] {
@@ -177,7 +202,16 @@
     padding: 22px 20px;
     text-align: center;
   }
-  .success .emoji { font-size: 32px; margin-bottom: 8px; }
+  .success-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(79, 158, 107, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+  }
   .success h2 { font-family: "Fraunces", Georgia, serif; font-size: 19px; font-weight: 600; margin-bottom: 6px; }
   .success p { font-size: 14px; color: var(--text-dim); line-height: 1.5; }
 
@@ -213,7 +247,7 @@
   </div>
   <div class="hero-tint"></div>
   <div class="hero-content">
-    <span class="badge">🟡 em desenvolvimento</span>
+    <span class="badge">Em desenvolvimento</span>
     <h1>O Brasil não cabe numa tela de 6 polegadas.</h1>
     <p class="hero-sub">Enquanto os Reels tentam prender sua atenção, o resto continua esperando lá fora. O Oloi tira o Instagram do piloto automático — sem mexer nas suas DMs e Stories.</p>
   </div>
@@ -222,16 +256,25 @@
 <div class="wrap">
   <div class="features">
     <div class="feature">
-      <span class="icon">🔒</span>
-      <span class="txt"><b>Bloqueio que não volta a vazar.</b> <span>É o problema nº1 dos apps parecidos — some por um dia e volta. No Oloi os Reels ficam escondidos de vez.</span></span>
+      <span class="num">01</span>
+      <div>
+        <h3>Bloqueio que não some sozinho</h3>
+        <p>Outros apps do tipo voltam a mostrar Reels depois de um dia. No Oloi o bloqueio fica ativo — sem exceções.</p>
+      </div>
     </div>
     <div class="feature">
-      <span class="icon">💬</span>
-      <span class="txt"><b>DMs e Stories, sem tocar.</b> <span>Você continua falando com quem importa e vendo Stories normalmente — só os Reels somem.</span></span>
+      <span class="num">02</span>
+      <div>
+        <h3>Suas conversas continuam intactas</h3>
+        <p>DMs e Stories funcionam exatamente como sempre funcionaram. Só os Reels desaparecem.</p>
+      </div>
     </div>
     <div class="feature">
-      <span class="icon">✅</span>
-      <span class="txt"><b>Login direto, sem susto.</b> <span>Sem alerta falso de segurança, sem pedir sua senha em lugar estranho.</span></span>
+      <span class="num">03</span>
+      <div>
+        <h3>Login direto, sem desconfiança</h3>
+        <p>Sem alertas falsos de segurança. Sem pedir sua senha em nenhum lugar estranho.</p>
+      </div>
     </div>
   </div>
 
@@ -243,12 +286,14 @@
   </form>
 
   <div class="success" id="success-box">
-    <div class="emoji">🎉</div>
-    <h2>Você tá na lista.</h2>
+    <div class="success-icon">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 10.5L8 14.5L16 5.5" stroke="#4f9e6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2>Você está na lista.</h2>
     <p>Mandamos um e-mail de confirmação. Assim que o Oloi estiver pronto, você é um dos primeiros a saber.</p>
   </div>
 
-  <footer>Feito no Brasil 🇧🇷 — Oloi © 2026</footer>
+  <footer>Feito no Brasil — Oloi © 2026</footer>
 </div>
 
 <script>
