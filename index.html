@@ -29,17 +29,9 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── HERO ────────────────────────────────────────────────────── */
-  .hero {
-    position: relative;
-    min-height: 78vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    overflow: hidden;
-  }
-  .hero-bg { position: absolute; inset: 0; }
-  .hero-bg img {
+  /* ── FULL-PAGE BACKDROP (fixed, always fills the viewport behind everything) ── */
+  .backdrop { position: fixed; inset: 0; z-index: -2; }
+  .backdrop img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -48,10 +40,10 @@
     opacity: 0;
     animation: slideshow 28s infinite;
   }
-  .hero-bg img:nth-child(1) { animation-delay: 0s; }
-  .hero-bg img:nth-child(2) { animation-delay: 7s; }
-  .hero-bg img:nth-child(3) { animation-delay: 14s; }
-  .hero-bg img:nth-child(4) { animation-delay: 21s; }
+  .backdrop img:nth-child(1) { animation-delay: 0s; }
+  .backdrop img:nth-child(2) { animation-delay: 7s; }
+  .backdrop img:nth-child(3) { animation-delay: 14s; }
+  .backdrop img:nth-child(4) { animation-delay: 21s; }
   @keyframes slideshow {
     0%   { opacity: 0; transform: scale(1.02); }
     4%   { opacity: 1; }
@@ -59,22 +51,30 @@
     27%  { opacity: 0; transform: scale(1.08); }
     100% { opacity: 0; }
   }
-  .hero-tint {
-    position: absolute;
+  .backdrop-tint {
+    position: fixed;
     inset: 0;
+    z-index: -1;
     background: linear-gradient(
       to bottom,
-      rgba(24, 20, 16, 0.4) 0%,
-      rgba(24, 20, 16, 0.34) 62%,
-      var(--bg) 92%
+      rgba(24, 20, 16, 0.44) 0%,
+      rgba(24, 20, 16, 0.3) 34%,
+      rgba(246, 240, 228, 0.5) 58%,
+      rgba(246, 240, 228, 0.86) 100%
     );
   }
+
+  /* ── HERO TEXT ───────────────────────────────────────────────── */
   .hero-content {
     position: relative;
     max-width: 480px;
     width: 100%;
     margin: 0 auto;
-    padding: 64px 24px 56px;
+    padding: 64px 24px 40px;
+    min-height: 62vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
   .badge {
     display: inline-flex;
@@ -111,34 +111,54 @@
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
     margin-bottom: 14px;
   }
-  h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
   .hero-sub {
     font-size: 15.5px;
     line-height: 1.55;
-    color: rgba(255, 255, 255, 0.86);
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.2);
     max-width: 40ch;
   }
 
-  /* ── MAIN ────────────────────────────────────────────────────── */
-  .wrap {
+  /* ── GLASS PANEL (everything below the hero text, floats over the backdrop) ── */
+  .panel {
+    position: relative;
     max-width: 480px;
     margin: 0 auto;
-    padding: 32px 24px 40px;
+    padding: 28px 24px 40px;
+    background: rgba(255, 255, 255, 0.68);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 28px 28px 0 0;
+    box-shadow: 0 -24px 50px rgba(24, 20, 16, 0.06);
   }
+
+  .scarcity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(224, 122, 95, 0.12);
+    border: 1px solid rgba(224, 122, 95, 0.25);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #8a4230;
+    margin-bottom: 24px;
+  }
+  .scarcity b { color: var(--accent); font-weight: 700; }
+
   .features {
     display: flex;
     flex-direction: column;
-    margin-bottom: 40px;
+    margin-bottom: 28px;
     border-top: 1px solid var(--line);
   }
   .feature {
     display: flex;
     align-items: flex-start;
     gap: 20px;
-    padding: 24px 2px;
+    padding: 22px 2px;
     border-bottom: 1px solid var(--line);
   }
   .feature .num {
@@ -224,36 +244,37 @@
   }
 
   footer {
-    padding-top: 36px;
+    padding-top: 32px;
     font-size: 12.5px;
     color: var(--text-dim);
     text-align: center;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-bg img { animation: none; opacity: 1; }
-    .hero-bg img:not(:first-child) { display: none; }
+    .backdrop img { animation: none; opacity: 1; }
+    .backdrop img:not(:first-child) { display: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="hero-bg">
-    <img src="img/bg-01-cristo.jpg" alt="" loading="eager">
-    <img src="img/bg-02-lencois.jpg" alt="" loading="lazy">
-    <img src="img/bg-03-chapada.jpg" alt="" loading="lazy">
-    <img src="img/bg-04-noronha.jpg" alt="" loading="lazy">
-  </div>
-  <div class="hero-tint"></div>
-  <div class="hero-content">
-    <span class="badge">Em desenvolvimento</span>
-    <h1>Você não abre o Instagram pra ver Reels. Mas sempre acaba neles.</h1>
-    <p class="hero-sub">O Oloi bloqueia só os Reels — de verdade, sem voltar no dia seguinte. Suas DMs, Stories e o resto do app continuam exatamente como estão.</p>
-  </div>
+<div class="backdrop">
+  <img src="img/bg-01-cristo.jpg" alt="" loading="eager">
+  <img src="img/bg-02-lencois.jpg" alt="" loading="lazy">
+  <img src="img/bg-03-chapada.jpg" alt="" loading="lazy">
+  <img src="img/bg-04-noronha.jpg" alt="" loading="lazy">
+</div>
+<div class="backdrop-tint"></div>
+
+<div class="hero-content">
+  <span class="badge">Em desenvolvimento</span>
+  <h1>Você não abre o Instagram pra ver Reels. Mas sempre acaba neles.</h1>
+  <p class="hero-sub">O Oloi bloqueia só os Reels — de verdade, sem voltar no dia seguinte. Suas DMs, Stories e o resto do app continuam exatamente como estão.</p>
 </div>
 
-<div class="wrap">
+<div class="panel">
+  <p class="scarcity">Apenas as <b>primeiras 500 pessoas</b> da lista entram no teste beta antes do lançamento oficial.</p>
+
   <div class="features">
     <div class="feature">
       <span class="num">01</span>
