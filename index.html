@@ -344,11 +344,39 @@
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhtb3BxYm93d2tycG1wYWV5YnVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MjI4MTAsImV4cCI6MjEwMjk5ODgxMH0.Wan1G8mbAx5T6ofqn4psiqJbbiq7QaD7Wdtvi3HAvP0";
   const FUNCTION_URL = SUPABASE_URL + "/functions/v1/join-waitlist";
 
+  // Anti-abuse: paste a Cloudflare Turnstile site key here to show a
+  // (managed / near-invisible) human check, then set the matching
+  // TURNSTILE_SECRET on the Edge Function (`supabase secrets set
+  // TURNSTILE_SECRET=...`). Left blank = no check, nothing extra loads,
+  // the form behaves exactly as before.
+  const TURNSTILE_SITE_KEY = "";
+
   const form = document.getElementById("waitlist-form");
   const emailInput = document.getElementById("email");
   const submitBtn = document.getElementById("submit-btn");
   const errorMsg = document.getElementById("error-msg");
   const successBox = document.getElementById("success-box");
+
+  let turnstileToken = "";
+  if (TURNSTILE_SITE_KEY) {
+    const holder = document.createElement("div");
+    holder.id = "turnstile-holder";
+    holder.style.margin = "0 0 14px";
+    form.insertBefore(holder, submitBtn);
+    window.onTurnstileLoad = () => {
+      window.turnstile.render("#turnstile-holder", {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: (t) => { turnstileToken = t; },
+        "error-callback": () => { turnstileToken = ""; },
+        "expired-callback": () => { turnstileToken = ""; },
+      });
+    };
+    const s = document.createElement("script");
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad";
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -367,6 +395,7 @@
         body: JSON.stringify({
           email: emailInput.value.trim(),
           source: document.referrer || "direct",
+          turnstileToken: turnstileToken,
         }),
       });
 
