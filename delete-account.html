@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excluir sua conta — Oloi</title>
+<meta name="description" content="Como apagar sua conta do Oloi e todos os dados associados.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f0e4;
+    --card: #ffffff;
+    --card-alt: #efe4d2;
+    --line: #e6dac4;
+    --text: #181410;
+    --text-dim: #7c7161;
+    --accent: #e07a5f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.62;
+  }
+  .wrap {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4.5rem) clamp(1.2rem, 5vw, 2rem) 5rem;
+  }
+  .brand {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .brand:hover { color: var(--accent); }
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.9rem, 5.5vw, 2.5rem);
+    line-height: 1.12;
+    margin: 2.4rem 0 0.4rem;
+    text-wrap: balance;
+  }
+  .updated {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 2.6rem;
+  }
+  section {
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--line);
+  }
+  section:first-of-type { border-top: 0; }
+  h2 {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+    margin-bottom: 0.6rem;
+  }
+  section p { margin: 0.55rem 0; color: #2b241c; }
+  section p + p { margin-top: 0.8rem; }
+  ol, ul { margin: 0.6rem 0 0.2rem 1.3rem; color: #2b241c; }
+  li { margin: 0.35rem 0; }
+  a { color: var(--accent); }
+  .mail {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-weight: 600;
+  }
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16130f;
+      --card: #201b15;
+      --card-alt: #2a231a;
+      --line: #322a20;
+      --text: #f1ead9;
+      --text-dim: #a2967f;
+      --accent: #e88a70;
+    }
+    section p, ol, ul { color: #d8cfbe; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="brand" href="/">Oloi</a>
+
+    <h1>Excluir sua conta e seus dados</h1>
+    <p class="updated">Última atualização: 9 de setembro de 2026</p>
+
+    <section>
+      <h2>Pelo app (imediato)</h2>
+      <p>Abra o Oloi e vá em <strong>Perfil &gt; Apagar conta</strong> e confirme.</p>
+      <p>Isso apaga na hora:</p>
+      <ul>
+        <li>sua conta no nosso servidor: e-mail (ou identificador da Apple), data de criação, seu código de indicação e o histórico de indicações;</li>
+        <li>tudo o que estava salvo no aparelho: filtros ativos, sequência de dias, nome informado no onboarding e preferências de pausa/limite de tempo.</li>
+      </ul>
+      <p>A ação não pode ser desfeita.</p>
+    </section>
+
+    <section>
+      <h2>Sem acesso ao app</h2>
+      <p>Se você não consegue mais abrir o Oloi, envie um e-mail para o endereço abaixo <strong>a partir do e-mail cadastrado na conta</strong>, pedindo a exclusão. Concluímos em até 30 dias e confirmamos por e-mail quando terminar.</p>
+      <a class="mail" href="mailto:oi@oloi.app?subject=Excluir%20minha%20conta%20Oloi">oi@oloi.app</a>
+    </section>
+
+    <section>
+      <h2>O que fica retido</h2>
+      <p>Nada. O Oloi não guarda cópia dos seus dados depois da exclusão. Não há backup de longo prazo com dados de conta, e não usamos seus dados para publicidade ou treino de modelos.</p>
+      <p>Sua senha do Instagram nunca chega ao Oloi — o login acontece direto no site do Instagram dentro do app —, então não há nada desse tipo para apagar.</p>
+    </section>
+
+    <section>
+      <h2>Dúvidas</h2>
+      <p>Fale com a gente em <a href="mailto:oi@oloi.app">oi@oloi.app</a>. Veja também a <a href="/privacy.html">Política de Privacidade</a>.</p>
+    </section>
+
+    <footer>
+      Oloi — Instagram sem o buraco negro dos Reels. <a href="/">oloi.app</a>
+    </footer>
+  </div>
+</body>
+</html>
