@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oloi — roster</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f0e4;
+    --card: #ffffff;
+    --line: #e6dac4;
+    --text: #181410;
+    --dim: #7c7161;
+    --accent: #e07a5f;
+    --ok: #4f9e6b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16130f; --card: #201b15; --line: #322a20;
+      --text: #f1ead9; --dim: #a2967f; --accent: #e88a70; --ok: #79b98c;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); }
+  body {
+    color: var(--text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 60rem; margin: 0 auto; padding: clamp(2rem, 6vw, 4rem) clamp(1.1rem, 5vw, 2rem) 4rem; }
+  .brand {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600; font-size: 1.1rem; color: var(--text); text-decoration: none;
+  }
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600; font-size: clamp(1.7rem, 5vw, 2.2rem);
+    margin: 1.8rem 0 0.3rem;
+  }
+  .sub { color: var(--dim); font-size: 0.95rem; margin-bottom: 2.2rem; }
+
+  /* --- gate --- */
+  .gate { max-width: 22rem; }
+  .gate label {
+    display: block; font-size: 0.72rem; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  .gate input {
+    width: 100%; padding: 0.7rem 0.85rem; font-size: 0.95rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    background: var(--card); color: var(--text);
+    border: 1px solid var(--line); border-radius: 6px;
+  }
+  .gate input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .gate button, .bar button {
+    font: inherit; font-weight: 600; cursor: pointer;
+    background: var(--accent); color: #fff; border: 0;
+    padding: 0.6rem 1rem; border-radius: 6px;
+  }
+  .gate button { margin-top: 0.9rem; width: 100%; padding: 0.7rem; }
+  .gate .err { color: var(--accent); font-size: 0.85rem; margin-top: 0.7rem; min-height: 1.2em; }
+
+  /* --- roster --- */
+  .bar {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.9rem;
+    margin-bottom: 1.1rem;
+  }
+  .bar .count {
+    font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 1.4rem;
+  }
+  .bar .spacer { flex: 1 1 auto; }
+  .bar button {
+    background: transparent; color: var(--accent);
+    border: 1px solid var(--line); padding: 0.4rem 0.8rem; font-size: 0.85rem;
+  }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+  th, td {
+    text-align: left; padding: 0.7rem 0.9rem; white-space: nowrap;
+    border-bottom: 1px solid var(--line);
+  }
+  th {
+    font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--dim); background: var(--card); position: sticky; top: 0;
+  }
+  tr:last-child td { border-bottom: 0; }
+  td.email { font-family: "IBM Plex Mono", ui-monospace, monospace; white-space: normal; word-break: break-all; }
+  td.dim { color: var(--dim); }
+  .tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    padding: 0.1rem 0.45rem; border-radius: 999px;
+    background: color-mix(in srgb, var(--ok) 20%, transparent); color: var(--ok);
+  }
+  .foot {
+    margin-top: 1.4rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.78rem; color: var(--dim);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: none; }
+  .err { color: var(--accent); }
+  a { color: var(--accent); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="brand" href="/">Oloi</a>
+    <h1>Roster</h1>
+    <p class="sub">Quem criou conta no app. Página privada — não indexada, protegida por senha.</p>
+
+    <form class="gate" id="gate">
+      <label for="pw">Senha do admin</label>
+      <input id="pw" type="password" autocomplete="current-password" autocapitalize="off" spellcheck="false">
+      <button type="submit">Entrar</button>
+      <div class="err" id="gate-err"></div>
+    </form>
+
+    <div id="roster" hidden>
+      <div class="bar">
+        <span class="count" id="count">·</span>
+        <span class="spacer"></span>
+        <button type="button" id="copy">copiar e-mails</button>
+        <button type="button" id="signout">sair</button>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th>E-mail</th>
+              <th>Cadastrou</th>
+              <th>Última vez ativo</th>
+              <th>Convite</th>
+              <th>Pro até</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="foot"><span class="pulse"></span><span id="foot-txt">—</span></div>
+    </div>
+  </div>
+
+<script>
+  var RPC = "https://xmopqbowwkrpmpaeybua.supabase.co/rest/v1/rpc/get_admin_roster";
+  var ANON = "sb_publishable_Hv8jI08Xjbvgoy9JLUdAJA_aTlLqfg6";
+  var STORE = "oloi_roster_key";
+
+  var gate = document.getElementById("gate");
+  var gateErr = document.getElementById("gate-err");
+  var roster = document.getElementById("roster");
+  var rowsEl = document.getElementById("rows");
+  var countEl = document.getElementById("count");
+  var footTxt = document.getElementById("foot-txt");
+  var emails = [];
+
+  function fmt(ts) {
+    if (!ts) return "—";
+    var d = new Date(ts);
+    return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" }) +
+           " " + d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function render(data) {
+    emails = data.map(function (r) { return r.email; });
+    countEl.textContent = data.length + (data.length === 1 ? " conta" : " contas");
+    rowsEl.innerHTML = "";
+    data.forEach(function (r) {
+      var tr = document.createElement("tr");
+      var proTxt = r.pro_until ? fmt(r.pro_until) : "—";
+      tr.innerHTML =
+        '<td class="email"></td>' +
+        '<td class="dim">' + fmt(r.signed_up_at) + '</td>' +
+        '<td class="dim">' + fmt(r.last_active_at) + '</td>' +
+        '<td>' + (r.via_referral ? '<span class="tag">convite</span>' : '<span class="dim">—</span>') + '</td>' +
+        '<td class="dim">' + proTxt + '</td>';
+      tr.querySelector(".email").textContent = r.email;
+      rowsEl.appendChild(tr);
+    });
+    footTxt.textContent = "atualizado " + new Date().toLocaleTimeString("pt-BR");
+    footTxt.className = "";
+  }
+
+  async function load(pw, fromStore) {
+    try {
+      var res = await fetch(RPC, {
+        method: "POST",
+        headers: { "apikey": ANON, "Authorization": "Bearer " + ANON, "Content-Type": "application/json" },
+        body: JSON.stringify({ secret: pw })
+      });
+      if (res.status === 400 || res.status === 401 || res.status === 403) {
+        try { localStorage.removeItem(STORE); } catch (e) {}
+        roster.hidden = true;
+        gate.hidden = false;
+        gateErr.textContent = fromStore ? "A senha salva não vale mais. Digita de novo." : "Senha errada.";
+        return;
+      }
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      var data = await res.json();
+      try { localStorage.setItem(STORE, pw); } catch (e) {}
+      gate.hidden = true;
+      gateErr.textContent = "";
+      roster.hidden = false;
+      render(data);
+    } catch (e) {
+      if (!roster.hidden) {
+        footTxt.textContent = "erro ao atualizar (" + e.message + ")";
+        footTxt.className = "err";
+      } else {
+        gateErr.textContent = "erro de conexão (" + e.message + ")";
+      }
+    }
+  }
+
+  gate.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var pw = document.getElementById("pw").value.trim();
+    if (pw) load(pw, false);
+  });
+
+  document.getElementById("signout").addEventListener("click", function () {
+    try { localStorage.removeItem(STORE); } catch (e) {}
+    location.reload();
+  });
+
+  document.getElementById("copy").addEventListener("click", function () {
+    var txt = emails.join(", ");
+    navigator.clipboard.writeText(txt).then(function () {
+      var b = document.getElementById("copy");
+      var old = b.textContent;
+      b.textContent = "copiado ✓";
+      setTimeout(function () { b.textContent = old; }, 1500);
+    });
+  });
+
+  (function boot() {
+    var saved = null;
+    try { saved = localStorage.getItem(STORE); } catch (e) {}
+    if (saved) { load(saved, true); }
+  })();
+</script>
+</body>
+</html>
