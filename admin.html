@@ -165,6 +165,7 @@
         <div class="nav-item" data-page="waitlist"><span class="nav-icon">◒</span>Waitlist</div>
         <div class="nav-group">Sistema</div>
         <div class="nav-item" data-page="promocao"><span class="nav-icon">◓</span>Promoção</div>
+        <div class="nav-item" data-page="versoes"><span class="nav-icon">◔</span>Versões</div>
       </nav>
       <div class="sidebar-footer">
         <button class="btn-logout" id="btn-logout">Sair</button>
@@ -256,6 +257,28 @@
           </div>
         </div>
 
+        <!-- VERSÕES -->
+        <div class="page" id="page-versoes">
+          <div class="promo-card">
+            <div style="font-size:13px;font-weight:700;margin-bottom:6px">Tela de atualização do app (iOS)</div>
+            <div style="font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.5">
+              Números são o <strong>build</strong> (ex.: 1.0.4 = build 13). Quem tiver build menor que o
+              <strong>mais novo</strong> vê um aviso que dá pra fechar. Menor que o <strong>mínimo</strong>: tela
+              cheia sem saída, só "Atualizar". Só suba o mais novo depois que a versão estiver <strong>à venda</strong>
+              na App Store.
+            </div>
+            <div class="promo-status" id="ver-status">Carregando...</div>
+            <div class="promo-actions">
+              <span style="font-size:12px;color:var(--dim)">mais novo</span>
+              <input type="number" id="ver-latest" min="0">
+              <span style="font-size:12px;color:var(--dim)">mínimo</span>
+              <input type="number" id="ver-min" min="0">
+              <button class="btn primary" id="ver-save-btn">Salvar</button>
+            </div>
+            <div class="promo-log" id="ver-log"></div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -332,6 +355,7 @@ const PAGE_TITLES = {
   indicacoes: ["Indicações", "Quem indicou quem"],
   waitlist:   ["Waitlist", "Cadastros de espera antes do lançamento"],
   promocao:   ["Promoção", "Pro grátis de lançamento — ligar/desligar/estender"],
+  versoes:    ["Versões", "Aviso e obrigação de atualizar o app"],
 };
 
 document.querySelectorAll(".nav-item[data-page]").forEach(function (el) {
@@ -356,6 +380,7 @@ function loadPage(page) {
   if (page === "indicacoes") loadIndicacoes();
   if (page === "waitlist")   loadWaitlist();
   if (page === "promocao")   loadPromocao();
+  if (page === "versoes")    loadVersoes();
 }
 
 // ── UTILS ─────────────────────────────────────────────────────────
@@ -649,6 +674,37 @@ document.getElementById("promo-clear-btn").addEventListener("click", async funct
     await api("set_promo", { mode: "clear" });
     log.textContent = "Promo limpa.";
     loadPromocao();
+  } catch (e) { log.textContent = "Erro: " + e.message; }
+});
+
+// ── VERSÕES ───────────────────────────────────────────────────────
+async function loadVersoes() {
+  const statusEl = document.getElementById("ver-status");
+  statusEl.textContent = "Carregando...";
+  try {
+    const rows = await api("get_versions");
+    const ios = rows.find(function (r) { return r.platform === "ios"; });
+    if (!ios) { statusEl.textContent = "Sem linha pra iOS."; return; }
+    document.getElementById("ver-latest").value = ios.latest_build;
+    document.getElementById("ver-min").value = ios.min_build;
+    statusEl.innerHTML = 'Mais novo <strong>' + ios.latest_build + '</strong> &nbsp;·&nbsp; mínimo <strong>' +
+      ios.min_build + '</strong> &nbsp;<span class="cell-dim">(mudou em ' + fmtDate(ios.updated_at) + ')</span>';
+  } catch (e) {
+    statusEl.textContent = "Erro: " + e.message;
+  }
+}
+document.getElementById("ver-save-btn").addEventListener("click", async function () {
+  const latest = parseInt(document.getElementById("ver-latest").value, 10);
+  const min = parseInt(document.getElementById("ver-min").value, 10);
+  const log = document.getElementById("ver-log");
+  if (!(latest >= 0) || !(min >= 0)) { log.textContent = "Preencha os dois números."; return; }
+  if (min > latest) { log.textContent = "O mínimo não pode passar do mais novo."; return; }
+  if (min > 0 && !confirm("Quem tiver build menor que " + min + " fica TRAVADO numa tela de atualizar até baixar a nova. Confirma?")) return;
+  log.textContent = "Salvando...";
+  try {
+    await api("set_versions", { platform: "ios", latest_build: latest, min_build: min });
+    log.textContent = "Salvo.";
+    loadVersoes();
   } catch (e) { log.textContent = "Erro: " + e.message; }
 });
 </script>
