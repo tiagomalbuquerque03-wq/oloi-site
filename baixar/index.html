@@ -40,8 +40,11 @@
     var ua = navigator.userAgent;
     var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     props.ios = ios;
+    props.ua = ua.slice(0, 160);
+    // a revisão da Meta abre o link várias vezes logo depois de criar o anúncio
+    var bot = /bot|crawl|spider|facebookexternalhit|facebot|meta-externalagent|headless|preview/i.test(ua) || navigator.webdriver;
     var id = "web_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
-    try {
+    if (!bot) try {
       fetch("https://xmopqbowwkrpmpaeybua.supabase.co/rest/v1/rpc/track_event", {
         method: "POST", keepalive: true,
         headers: { "Content-Type": "application/json", apikey: "sb_publishable_Hv8jI08Xjbvgoy9JLUdAJA_aTlLqfg6" },
