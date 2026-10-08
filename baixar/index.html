@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Baixar o Oloi</title>
+<link rel="icon" type="image/png" href="/media/oloi-icon.png">
+<style>
+  :root { --bg: #F6F1EA; --ink: #1D1A17; --muted: #6E665E; --coral: #E9876A; }
+  * { box-sizing: border-box; margin: 0; }
+  body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px;
+         background: var(--bg); color: var(--ink); font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; text-align: center; }
+  main { max-width: 360px; }
+  h1 { font-size: 30px; letter-spacing: -0.8px; margin-bottom: 10px; }
+  h1 span { color: var(--coral); }
+  p { color: var(--muted); font-size: 17px; line-height: 1.45; margin-bottom: 28px; }
+  a.btn { display: inline-block; padding: 16px 28px; border-radius: 16px; background: var(--ink); color: #fff;
+          font-weight: 700; font-size: 17px; text-decoration: none; }
+  a.site { display: block; margin-top: 18px; color: var(--muted); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Instagram sem <span>Reels</span>.</h1>
+  <p>O Oloi tira os Reels do Instagram e os Shorts do YouTube. Grátis na App Store.</p>
+  <a class="btn" id="store" href="https://apps.apple.com/br/app/oloi/id6811489489">Baixar na App Store</a>
+  <a class="site" href="/">Conhecer o Oloi</a>
+</main>
+<script>
+  // Entrada dos anúncios: registra o clique (com a utm do criativo) no funil
+  // do app e manda o iPhone direto pra loja, sem passar pelo site.
+  (function () {
+    var STORE = "https://apps.apple.com/br/app/oloi/id6811489489";
+    var q = new URLSearchParams(location.search);
+    var props = {};
+    ["utm_source", "utm_medium", "utm_campaign", "utm_content"].forEach(function (k) {
+      var v = q.get(k); if (v) props[k] = v.slice(0, 60);
+    });
+    var ua = navigator.userAgent;
+    var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    props.ios = ios;
+    var id = "web_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    try {
+      fetch("https://xmopqbowwkrpmpaeybua.supabase.co/rest/v1/rpc/track_event", {
+        method: "POST", keepalive: true,
+        headers: { "Content-Type": "application/json", apikey: "sb_publishable_Hv8jI08Xjbvgoy9JLUdAJA_aTlLqfg6" },
+        body: JSON.stringify({ p_anon_id: id, p_name: "web_baixar", p_props: props, p_platform: "web" })
+      }).catch(function () {});
+    } catch (e) {}
+    if (ios) setTimeout(function () { location.replace(STORE); }, 120);
+  })();
+</script>
+</body>
+</html>
